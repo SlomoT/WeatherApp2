@@ -1,5 +1,7 @@
 package com.example.sunduoduo.weatherapp.db;
 
+import org.litepal.crud.DataSupport;
+
 public class Province extends DataSupport {
     private int id;
     private String provinceName; //记录省的名字
