@@ -13,4 +13,5 @@
         android:name="com.example.sunduoduo.weatherapp.ChooseAreaFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </FrameLayout>
