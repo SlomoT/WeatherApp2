@@ -3,7 +3,7 @@ package com.example.sunduoduo.weatherapp.util;
 import android.text.TextUtils;
 
 import com.example.sunduoduo.weatherapp.db.City;
-import com.example.sunduoduo.weatherapp.db.Country;
+import com.example.sunduoduo.weatherapp.db.County;
 import com.example.sunduoduo.weatherapp.db.Province;
 
 import com.example.sunduoduo.weatherapp.gson.Weather;
@@ -56,14 +56,14 @@ public class Utility {
     }
 
     //解析和处理服务器返回的县级数据
-    public static boolean handleCountryResponse(String response, int cityId){
+    public static boolean handleCountyResponse(String response, int cityId){
         if(!TextUtils.isEmpty(response)){
             try{
                 JSONArray allCountries=new JSONArray(response);
                 for(int i=0;i<allCountries.length();i++){
                     JSONObject countryObject=allCountries.getJSONObject(i);
-                    Country country = new Country();
-                    country.setCountryName(countryObject.getString("name"));
+                    County country = new County();
+                    country.setCountyName(countryObject.getString("name"));
                     country.setWeatherId(countryObject.getString("weather_id"));
                     country.setCityId(cityId);
                     country.save();

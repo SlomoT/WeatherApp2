@@ -2,6 +2,8 @@ package com.example.sunduoduo.weatherapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
@@ -53,6 +55,12 @@ public class WeatherActivity extends AppCompatActivity{
     protected void onCreate(Bundle saveInstanceState){//获取控件
         super.onCreate(saveInstanceState);
 
+        if (Build.VERSION.SDK_INT >= 21){
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+
         setContentView(R.layout.activity_weather);
 
         //初始化各控件
@@ -65,11 +73,16 @@ public class WeatherActivity extends AppCompatActivity{
         aqiText = (TextView) findViewById(R.id.aqi_text);
         pm25Text= (TextView) findViewById(R.id.pm25_text);
         comfortText = (TextView) findViewById(R.id.comfort_text);
-        carWashText = (TextView) findViewById(R.id.car_cash_text);
+        carWashText = (TextView) findViewById(R.id.car_wash_text);
         sportText = (TextView) findViewById(R.id.sport_text);
 
         bingPicImg=(ImageView)findViewById(R.id.bing_pic_img);
 
+        swipeRefresh = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navButton = (Button) findViewById(R.id.nav_button);
 
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -81,9 +94,10 @@ public class WeatherActivity extends AppCompatActivity{
             showWeatherInfo(weather);
         }else {
             //无缓存时去服务器查询天气
+            String WeatherId = getIntent().getStringExtra("weather_id");
             mWeatherId = getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(View.INVISIBLE);
-            requestWeather(mWeatherId);
+            requestWeather(WeatherId);
         }
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -108,8 +122,9 @@ public class WeatherActivity extends AppCompatActivity{
 
     //根据天气id请求城市信息
     public void requestWeather(final String weatherId) {
-        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=abf19cd99ab648e6850a2faee5039a63";
+        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=8bc4e62241894d7f8b26384ba1b6da60";
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
+            @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
                 final Weather weather = Utility.handleWeatherResponse(responseText);
@@ -120,6 +135,7 @@ public class WeatherActivity extends AppCompatActivity{
                             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
                             editor.putString("weather",responseText);
                             editor.apply();
+                            mWeatherId = weather.basic.weatherId;
                             showWeatherInfo(weather);
                         } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
@@ -129,6 +145,7 @@ public class WeatherActivity extends AppCompatActivity{
                 });
             }
 
+            @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 runOnUiThread(new Runnable() {

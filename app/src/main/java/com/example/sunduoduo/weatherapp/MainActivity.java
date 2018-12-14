@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.sunduoduo.weatherapp.R;
+
 
 public class MainActivity extends AppCompatActivity {
 

@@ -2,9 +2,9 @@ package com.example.sunduoduo.weatherapp.db;
 
 import org.litepal.crud.DataSupport;
 
-public class Country extends DataSupport {
+public class County extends DataSupport {
     private int id;
-    private String countryName; //记录县的名字
+    private String countyName; //记录县的名字
     private String weatherId;   //记录县所对应的天气的id
     private int cityId;         //记录当前县所属市的id值
 
@@ -16,12 +16,12 @@ public class Country extends DataSupport {
         this.id = id;
     }
 
-    public String getCountryName() {
-        return countryName;
+    public String getCountyName() {
+        return countyName;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
+    public void setCountyName(String countyName) {
+        this.countyName = countyName;
     }
 
     public String getWeatherId() {

@@ -6,6 +6,6 @@
     <list>
         <mapping class="com.example.sunduoduo.weatherapp.db.Province"/>
         <mapping class="com.example.sunduoduo.weatherapp.db.City"/>
-        <mapping class="com.example.sunduoduo.weatherapp.db.Country"/>
+        <mapping class="com.example.sunduoduo.weatherapp.db.County"/>
     </list>
 </litepal>
