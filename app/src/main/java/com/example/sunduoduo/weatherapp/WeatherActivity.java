@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.sunduoduo.weatherapp.gson.Forecast;
 import com.example.sunduoduo.weatherapp.gson.Weather;
+import com.example.sunduoduo.weatherapp.service.AutoUpdateService;
 import com.example.sunduoduo.weatherapp.util.HttpUtil;
 import com.example.sunduoduo.weatherapp.util.Utility;
 
@@ -80,10 +81,6 @@ public class WeatherActivity extends AppCompatActivity{
 
         swipeRefresh = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navButton = (Button) findViewById(R.id.nav_button);
-
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather",null);
@@ -198,6 +195,9 @@ public class WeatherActivity extends AppCompatActivity{
         carWashText.setText(carwash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
 
     }
 
